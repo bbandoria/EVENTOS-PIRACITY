@@ -53,6 +53,7 @@ export function VenueMap({ venues, userLocation, onVenueClick }: VenueMapProps) 
             zoomControl: true,
             mapTypeControl: false,
             streetViewControl: false,
+            fullscreenControl: true,
             styles: [
               {
                 featureType: 'poi',
@@ -130,11 +131,6 @@ export function VenueMap({ venues, userLocation, onVenueClick }: VenueMapProps) 
       } catch (error) {
         console.error('Erro ao inicializar o mapa:', error);
         setError('Não foi possível carregar o mapa. Por favor, tente novamente mais tarde.');
-        toast({
-          title: "Erro ao carregar o mapa",
-          description: error instanceof Error ? error.message : 'Erro desconhecido',
-          variant: "destructive"
-        });
       }
     };
 
@@ -154,11 +150,11 @@ export function VenueMap({ venues, userLocation, onVenueClick }: VenueMapProps) 
   if (error) {
     return (
       <div className="absolute inset-0 flex items-center justify-center bg-zinc-100">
-        <div className="text-center p-4">
+        <div className="text-center p-4 bg-white rounded-lg shadow-lg">
           <p className="text-red-500 mb-2">{error}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="text-sm text-zinc-600 hover:text-zinc-900"
+            className="text-sm text-zinc-600 hover:text-zinc-900 underline"
           >
             Tentar novamente
           </button>

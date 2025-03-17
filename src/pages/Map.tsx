@@ -170,7 +170,7 @@ export default function Map() {
               <h1 className="text-2xl font-semibold mb-2">Mapa de Bares e Eventos</h1>
               <p className="text-muted-foreground mb-6">Encontre estabelecimentos próximos a você</p>
               
-              <div className="relative">
+              <div className="relative mb-6">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Buscar por bares, restaurantes..."
@@ -182,51 +182,77 @@ export default function Map() {
                   variant="ghost"
                   size="icon"
                   className="absolute right-1 top-1 h-8 w-8"
+                  title="Filtros"
                 >
                   <SlidersHorizontal className="h-4 w-4" />
                 </Button>
               </div>
 
-              <div className="mt-6">
-                <h2 className="font-medium mb-4">
-                  Estabelecimentos
-                  {userLocation && (
-                    <span className="text-sm font-normal text-muted-foreground ml-2">
-                      (ordenados por distância)
-                    </span>
-                  )}
-                </h2>
+              {userLocation && (
+                <div className="bg-secondary/50 rounded-lg p-4 mb-6">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                    <MapPin className="h-4 w-4" />
+                    <span>Sua localização atual</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Mostrando estabelecimentos próximos a você. Os resultados estão ordenados por distância.
+                  </p>
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="font-medium">Estabelecimentos</h2>
+                  <span className="text-sm text-muted-foreground">
+                    {filteredVenues.length} {filteredVenues.length === 1 ? 'local encontrado' : 'locais encontrados'}
+                  </span>
+                </div>
+
                 <div className="space-y-4">
                   {loading ? (
-                    <div className="text-center text-muted-foreground">Carregando estabelecimentos...</div>
+                    <div className="text-center py-8">
+                      <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
+                      <p className="text-muted-foreground">Carregando estabelecimentos...</p>
+                    </div>
                   ) : filteredVenues.length === 0 ? (
-                    <div className="text-center text-muted-foreground">Nenhum estabelecimento encontrado</div>
+                    <div className="text-center py-8">
+                      <Search className="h-8 w-8 mx-auto mb-4 text-muted-foreground" />
+                      <p className="text-muted-foreground">Nenhum estabelecimento encontrado</p>
+                    </div>
                   ) : (
                     filteredVenues.map(venue => (
                       <div 
                         key={venue.id} 
-                        className="flex items-start gap-4 p-3 rounded-lg hover:bg-accent cursor-pointer group"
+                        className="flex items-start gap-4 p-3 rounded-lg hover:bg-accent cursor-pointer group transition-colors"
                         onClick={() => openInGoogleMaps(venue)}
                       >
                         <img
                           src={venue.image_url || '/placeholder-venue.jpg'}
                           alt={venue.name}
-                          className="w-16 h-16 rounded-lg object-cover"
+                          className="w-20 h-20 rounded-lg object-cover"
                         />
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-2">
                             <div>
-                              <h3 className="font-medium">{venue.name}</h3>
-                              <p className="text-sm text-muted-foreground">{venue.address}</p>
+                              <h3 className="font-medium truncate">{venue.name}</h3>
+                              <p className="text-sm text-muted-foreground truncate">{venue.address}</p>
                             </div>
-                            <Navigation className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                              title="Abrir no Google Maps"
+                            >
+                              <Navigation className="h-4 w-4 text-muted-foreground" />
+                            </Button>
                           </div>
-                          <div className="flex gap-2 mt-1">
-                            <span className="text-xs bg-secondary px-2 py-1 rounded">
-                              {venue.eventsCount} eventos
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            <span className="text-xs bg-secondary px-2 py-1 rounded-full">
+                              {venue.eventsCount} {venue.eventsCount === 1 ? 'evento' : 'eventos'}
                             </span>
                             {userLocation && venue.distance !== undefined && (
-                              <span className="text-xs bg-secondary px-2 py-1 rounded">
+                              <span className="text-xs bg-secondary px-2 py-1 rounded-full flex items-center gap-1">
+                                <MapPin className="h-3 w-3" />
                                 {venue.distance.toFixed(1)} km
                               </span>
                             )}
@@ -237,6 +263,19 @@ export default function Map() {
                   )}
                 </div>
               </div>
+
+              {filteredVenues.length > 0 && (
+                <div className="mt-6 pt-6 border-t">
+                  <Button
+                    variant="outline"
+                    className="w-full flex items-center gap-2"
+                    onClick={() => window.open('https://www.google.com/maps', '_blank')}
+                  >
+                    <img src="/google-maps-icon.png" alt="Google Maps" className="h-4 w-4" />
+                    Abrir Google Maps
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 
