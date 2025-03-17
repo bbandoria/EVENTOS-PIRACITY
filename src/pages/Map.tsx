@@ -127,7 +127,7 @@ export default function Map() {
   };
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="border-b">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -167,9 +167,9 @@ export default function Map() {
         </div>
       </header>
       
-      <main className="flex-1 flex">
+      <main className="flex-1 flex h-[calc(100vh-64px)]">
         {/* Mapa */}
-        <div className="flex-1 relative">
+        <div className="flex-1 relative h-full">
           <VenueMap
             venues={filteredVenues}
             userLocation={userLocation}

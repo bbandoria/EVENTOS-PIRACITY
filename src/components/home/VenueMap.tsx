@@ -29,7 +29,8 @@ export function VenueMap({ venues, userLocation, onVenueClick }: VenueMapProps) 
 
         // Verifica se o elemento do mapa existe
         if (!mapContainerRef.current) {
-          throw new Error('Elemento do mapa não encontrado');
+          console.log('Container do mapa ainda não está disponível');
+          return;
         }
 
         // Verifica se a API do Google Maps está disponível
@@ -167,5 +168,5 @@ export function VenueMap({ venues, userLocation, onVenueClick }: VenueMapProps) 
     );
   }
 
-  return <div ref={mapContainerRef} className="absolute inset-0" />;
+  return <div ref={mapContainerRef} className="absolute inset-0 w-full h-full" />;
 }
