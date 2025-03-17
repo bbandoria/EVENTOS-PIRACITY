@@ -22,50 +22,6 @@ export function VenueMap({ venues, userLocation, onVenueClick }: VenueMapProps) 
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    getUserLocation();
-  }, []);
-
-  const getUserLocation = () => {
-    if (!navigator.geolocation) {
-      toast({
-        title: "Erro de Localização",
-        description: "Geolocalização não é suportada pelo seu navegador",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Verifica se está em HTTPS
-    if (window.location.protocol !== 'https:') {
-      toast({
-        title: "Aviso de Segurança",
-        description: "A geolocalização requer uma conexão segura (HTTPS). Usando localização padrão de Piracicaba.",
-        variant: "default"
-      });
-      setUserLocation({ lat: -22.7250, lng: -47.6476 }); // Coordenadas de Piracicaba
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setUserLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        });
-      },
-      (error) => {
-        console.error('Erro ao obter localização:', error);
-        toast({
-          title: "Erro de Localização",
-          description: "Não foi possível obter sua localização. Usando localização padrão de Piracicaba.",
-          variant: "default"
-        });
-        setUserLocation({ lat: -22.7250, lng: -47.6476 }); // Coordenadas de Piracicaba
-      }
-    );
-  };
-
-  useEffect(() => {
     const initMap = async () => {
       try {
         setLoading(true);
@@ -182,9 +138,7 @@ export function VenueMap({ venues, userLocation, onVenueClick }: VenueMapProps) 
       }
     };
 
-    // Pequeno delay para garantir que o elemento do mapa esteja renderizado
-    const timer = setTimeout(initMap, 100);
-    return () => clearTimeout(timer);
+    initMap();
   }, [venues, userLocation, onVenueClick]);
 
   if (loading) {

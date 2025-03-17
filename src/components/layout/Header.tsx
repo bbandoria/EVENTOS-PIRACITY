@@ -23,7 +23,6 @@ const Header = () => {
   }, [location]);
   
   const navLinks = [
-    { name: 'Explorar', path: '/', icon: Search },
     { name: 'Mapa', path: '/map', icon: Map },
     { name: 'Favoritos', path: '/favorites', icon: Heart },
   ];

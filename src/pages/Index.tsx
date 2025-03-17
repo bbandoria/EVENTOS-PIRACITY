@@ -315,7 +315,6 @@ const Index = () => {
             <div>
               <h4 className="font-medium mb-4">Links Rápidos</h4>
               <ul className="space-y-2">
-                <li><Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">Início</Link></li>
                 <li><Link to="/map" className="text-muted-foreground hover:text-foreground transition-colors">Mapa</Link></li>
                 <li><Link to="/favorites" className="text-muted-foreground hover:text-foreground transition-colors">Meus Favoritos</Link></li>
               </ul>
@@ -325,7 +324,6 @@ const Index = () => {
               <h4 className="font-medium mb-4">Para Estabelecimentos</h4>
               <ul className="space-y-2">
                 <li><Link to="/admin" className="text-muted-foreground hover:text-foreground transition-colors">Painel de Controle</Link></li>
-                <li><Link to="/register-venue" className="text-muted-foreground hover:text-foreground transition-colors">Cadastrar Local</Link></li>
               </ul>
             </div>
           </div>
