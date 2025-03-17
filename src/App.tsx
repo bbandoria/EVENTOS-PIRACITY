@@ -9,7 +9,6 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Admin from "./pages/Admin";
 import Map from "./pages/Map";
-import Today from "./pages/Today";
 import Favorites from "./pages/Favorites";
 import RegisterVenue from "./pages/RegisterVenue";
 import Login from "./pages/Login";
@@ -27,7 +26,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/map" element={<Map />} />
-              <Route path="/today" element={<Today />} />
               <Route path="/favorites" element={<Favorites />} />
               <Route path="/login" element={<Auth />} />
               <Route 
