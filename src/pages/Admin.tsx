@@ -29,7 +29,7 @@ export default function Admin() {
     try {
       await supabase.auth.signOut();
       toast.success('Logout realizado com sucesso!');
-      window.location.href = 'https://eventos-pira-hub.vercel.app/login';
+      window.location.href = 'https://eventos-pira-hub.netlify.app/login';
     } catch (error) {
       console.error('Erro ao fazer logout:', error);
       toast.error('Erro ao fazer logout');
