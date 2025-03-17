@@ -26,7 +26,6 @@ const Header = () => {
     { name: 'Explorar', path: '/', icon: Search },
     { name: 'Mapa', path: '/map', icon: Map },
     { name: 'Favoritos', path: '/favorites', icon: Heart },
-    { name: 'Hoje', path: '/today', icon: Calendar },
   ];
   
   return (

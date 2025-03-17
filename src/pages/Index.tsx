@@ -317,7 +317,6 @@ const Index = () => {
               <ul className="space-y-2">
                 <li><Link to="/" className="text-muted-foreground hover:text-foreground transition-colors">Início</Link></li>
                 <li><Link to="/map" className="text-muted-foreground hover:text-foreground transition-colors">Mapa</Link></li>
-                <li><Link to="/today" className="text-muted-foreground hover:text-foreground transition-colors">Hoje na Cidade</Link></li>
                 <li><Link to="/favorites" className="text-muted-foreground hover:text-foreground transition-colors">Meus Favoritos</Link></li>
               </ul>
             </div>
