@@ -33,8 +33,8 @@ const Header = () => {
     <header 
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-6 py-4',
-        isScrolled 
-          ? 'blur-backdrop border-b border-border/40' 
+        isScrolled || isMobileMenuOpen
+          ? 'bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800' 
           : 'bg-transparent'
       )}
     >
@@ -98,7 +98,7 @@ const Header = () => {
       {/* Mobile Navigation Menu */}
       <div 
         className={cn(
-          'fixed inset-0 top-[72px] bg-background md:hidden transition-all duration-300 ease-in-out z-40',
+          'fixed inset-0 top-[72px] bg-white dark:bg-gray-900 md:hidden transition-all duration-300 ease-in-out z-40',
           isMobileMenuOpen 
             ? 'opacity-100 pointer-events-auto' 
             : 'opacity-0 pointer-events-none'
@@ -113,7 +113,7 @@ const Header = () => {
                 'px-4 py-3 rounded-md text-base font-medium transition-all duration-200 flex items-center gap-3',
                 location.pathname === link.path
                   ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
               )}
             >
               <link.icon size={20} />
@@ -122,7 +122,7 @@ const Header = () => {
           ))}
           <Link 
             to="/login"
-            className="px-4 py-3 rounded-md text-base font-medium transition-all duration-200 flex items-center gap-3 mt-4 border border-border"
+            className="px-4 py-3 rounded-md text-base font-medium transition-all duration-200 flex items-center gap-3 mt-4 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
           >
             <User size={20} />
             Entrar como Estabelecimento
