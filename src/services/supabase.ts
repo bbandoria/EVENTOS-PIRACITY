@@ -1,12 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 import type { EventType } from '@/types/event';
 import type { VenueType } from '@/types/venue';
+import type { Database } from '@/types/supabase';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Singleton para o cliente Supabase
-let supabaseInstance: ReturnType<typeof createClient> | null = null;
+let supabaseInstance: ReturnType<typeof createClient<Database>> | null = null;
 
 export const getSupabaseClient = () => {
   if (!supabaseInstance) {
@@ -14,16 +15,16 @@ export const getSupabaseClient = () => {
       throw new Error('VITE_SUPABASE_URL não está definida no arquivo .env');
     }
 
-    if (!supabaseKey) {
+    if (!supabaseAnonKey) {
       throw new Error('VITE_SUPABASE_ANON_KEY não está definida no arquivo .env');
     }
 
     console.log('Inicializando cliente Supabase com:', {
       url: supabaseUrl,
-      keyLength: supabaseKey.length,
+      keyLength: supabaseAnonKey.length,
     });
 
-    supabaseInstance = createClient(supabaseUrl, supabaseKey, {
+    supabaseInstance = createClient<Database>(supabaseUrl, supabaseAnonKey, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
@@ -151,13 +152,9 @@ export const venuesService = {
   },
 
   async getAllVenues(): Promise<VenueType[]> {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session?.user) return [];
-
     const { data, error } = await supabase
       .from('venues')
       .select('*')
-      .eq('owner_id', session.user.id)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -418,12 +415,12 @@ export async function verifySupabaseConfig() {
   
   // Verificar se as variáveis de ambiente estão definidas
   const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-  const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
   
   console.log('VITE_SUPABASE_URL definido:', !!supabaseUrl);
-  console.log('VITE_SUPABASE_ANON_KEY definido:', !!supabaseKey);
+  console.log('VITE_SUPABASE_ANON_KEY definido:', !!supabaseAnonKey);
   
-  if (!supabaseUrl || !supabaseKey) {
+  if (!supabaseUrl || !supabaseAnonKey) {
     console.error('Variáveis de ambiente do Supabase não estão configuradas corretamente');
     return false;
   }
