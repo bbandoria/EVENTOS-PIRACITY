@@ -4,7 +4,7 @@ import { Event, Venue, eventsService } from '@/services/supabase';
 import EventCard from '@/components/home/EventCard';
 import { Button } from '@/components/ui/button';
 import { MapPin, Calendar } from 'lucide-react';
-import { format, parseISO, isSameDay } from 'date-fns';
+import { format, parseISO, isSameDay, startOfDay } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
 import Header from '@/components/layout/Header';
@@ -28,7 +28,7 @@ interface EventData {
 export default function Today() {
   const [events, setEvents] = useState<EventWithVenue[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [allEvents, setAllEvents] = useState<EventWithVenue[]>([]);
 
   useEffect(() => {
@@ -44,9 +44,17 @@ export default function Today() {
   const loadAllEvents = async () => {
     try {
       setLoading(true);
-      const events = await eventsService.getAllEvents();
-      setAllEvents(events as EventWithVenue[]);
-      filterEventsByDate();
+      const events = (await eventsService.getAllEvents() as unknown) as EventWithVenue[];
+      
+      // Filtrar eventos para hoje
+      const today = startOfDay(new Date());
+      const todayEvents = events.filter(event => {
+        const eventDate = parseISO(event.date);
+        return isSameDay(eventDate, today);
+      });
+      
+      setAllEvents(events);
+      setEvents(todayEvents);
     } catch (error) {
       console.error('Error loading events:', error);
       toast.error('Erro ao carregar eventos');
@@ -56,13 +64,6 @@ export default function Today() {
   };
 
   const filterEventsByDate = () => {
-    if (!selectedDate) {
-      // Se não houver data selecionada, mostrar todos os eventos
-      console.log(`Mostrando todos os ${allEvents.length} eventos`);
-      setEvents(allEvents);
-      return;
-    }
-    
     const filteredEvents = allEvents.filter(event => {
       const eventDate = parseISO(event.date);
       return isSameDay(eventDate, selectedDate);
@@ -72,8 +73,7 @@ export default function Today() {
     setEvents(filteredEvents);
   };
 
-  const handleDateSelect = (date: Date | null) => {
-    console.log('Data selecionada:', date ? format(date, 'dd/MM/yyyy') : 'Todos os eventos');
+  const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
   };
 
@@ -94,12 +94,7 @@ export default function Today() {
       <div className="container py-8 pt-24">
         <div className="flex flex-col gap-8">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold">
-              {selectedDate 
-                ? `Eventos do Dia ${format(selectedDate, "dd/MM", { locale: ptBR })}`
-                : "Todos os Eventos"
-              }
-            </h1>
+            <h1 className="text-3xl font-bold">Eventos do Dia</h1>
             <Link to="/map">
               <Button variant="outline">
                 <MapPin className="w-4 h-4 mr-2" />
@@ -128,9 +123,7 @@ export default function Today() {
           ) : (
             <div className="text-center py-12">
               <p className="text-lg text-muted-foreground">
-                {selectedDate
-                  ? `Não há eventos programados para ${format(selectedDate, "dd 'de' MMMM", { locale: ptBR })}.`
-                  : "Não há eventos cadastrados."}
+                Não há eventos programados para {format(selectedDate, "dd 'de' MMMM", { locale: ptBR })}.
               </p>
             </div>
           )}

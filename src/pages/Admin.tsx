@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { VenueForm } from '@/components/VenueForm';
 import { EventForm } from '@/components/EventForm';
 import { VenuesList } from '@/components/VenuesList';
 import { EventsList } from '@/components/EventsList';
 import { Button } from '@/components/ui/button';
-import { LogOut, User } from 'lucide-react';
+import { LogOut, User, ArrowLeft } from 'lucide-react';
 import { supabase } from '@/services/supabase';
 import { toast } from 'sonner';
 
@@ -50,6 +50,12 @@ export default function Admin() {
             <User className="h-4 w-4" />
             <span>{userEmail}</span>
           </div>
+          <Button variant="outline" size="sm" asChild>
+            <Link to="/" className="flex items-center gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Voltar para Home
+            </Link>
+          </Button>
           <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
             <LogOut className="h-4 w-4" />
             Sair
