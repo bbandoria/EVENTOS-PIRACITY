@@ -20,7 +20,7 @@ export function Auth() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/admin`
+          redirectTo: 'https://eventos-pira-hub.vercel.app/admin'
         }
       });
 
@@ -86,7 +86,7 @@ export function Auth() {
       }
 
       toast.success('Login realizado com sucesso!');
-      navigate('/admin');
+      window.location.href = 'https://eventos-pira-hub.vercel.app/admin';
     } catch (error) {
       console.error('Erro ao fazer login:', error);
       toast.error('Erro ao fazer login. Por favor, tente novamente.');
