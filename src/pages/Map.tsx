@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { calculateDistance } from '@/utils/distance';
 import { toast } from '@/components/ui/use-toast';
-import Header from '@/components/layout/Header';
 
 interface VenueWithDistance extends Venue {
   eventsCount: number;
@@ -128,19 +127,54 @@ export default function Map() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-1 flex pt-16">
-        {/* Mapa */}
-        <div className="flex-1 bg-zinc-100">
-          <div className="h-full">
-            <VenueMap
-              venues={filteredVenues}
-              userLocation={userLocation}
-              onVenueClick={openInGoogleMaps}
-            />
+    <div className="h-screen flex flex-col">
+      {/* Header */}
+      <header className="border-b">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-8">
+            <Link to="/" className="text-xl font-semibold hover:opacity-80">
+              Eventos Pira
+            </Link>
+            <div className="flex items-center gap-4">
+              <Link to="/">
+                <Button variant="ghost" className="text-muted-foreground">
+                  Explorar
+                </Button>
+              </Link>
+              <Link to="/map">
+                <Button variant="default" className="bg-zinc-900">
+                  <MapPin className="h-4 w-4 mr-2" />
+                  Mapa
+                </Button>
+              </Link>
+              <Link to="/favorites">
+                <Button variant="ghost" className="text-muted-foreground">
+                  <Heart className="h-4 w-4 mr-2" />
+                  Favoritos
+                </Button>
+              </Link>
+              <Link to="/today">
+                <Button variant="ghost" className="text-muted-foreground">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  Hoje
+                </Button>
+              </Link>
+            </div>
           </div>
+          <Link to="/login">
+            <Button variant="outline">Entrar</Button>
+          </Link>
+        </div>
+      </header>
+      
+      <main className="flex-1 flex">
+        {/* Mapa */}
+        <div className="flex-1 relative">
+          <VenueMap
+            venues={filteredVenues}
+            userLocation={userLocation}
+            onVenueClick={openInGoogleMaps}
+          />
         </div>
 
         {/* Lista de Estabelecimentos */}
